@@ -11,7 +11,7 @@ import Home from '@/pages/Home.vue'
 import Catalogue from '@/pages/Catalogue.vue'
 import Product from '@/pages/Product.vue'
 import Cart from '@/pages/Cart.vue'
-import Checkout from '@/pages/Checkout.vue'
+// import Checkout from '@/pages/Checkout.vue'
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
 router.onError((err, to) => {

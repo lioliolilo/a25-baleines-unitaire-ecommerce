@@ -21,7 +21,6 @@ declare module 'vue-router/auto-routes' {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/Cart': RouteRecordInfo<'/Cart', '/Cart', Record<never, never>, Record<never, never>>,
     '/Catalogue': RouteRecordInfo<'/Catalogue', '/Catalogue', Record<never, never>, Record<never, never>>,
-    '/Checkout': RouteRecordInfo<'/Checkout', '/Checkout', Record<never, never>, Record<never, never>>,
     '/Home': RouteRecordInfo<'/Home', '/Home', Record<never, never>, Record<never, never>>,
     '/Product': RouteRecordInfo<'/Product', '/Product', Record<never, never>, Record<never, never>>,
   }
@@ -47,10 +46,6 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/Catalogue.vue': {
       routes: '/Catalogue'
-      views: never
-    }
-    'src/pages/Checkout.vue': {
-      routes: '/Checkout'
       views: never
     }
     'src/pages/Home.vue': {
