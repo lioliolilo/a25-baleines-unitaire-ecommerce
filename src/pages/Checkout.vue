@@ -1,13 +1,15 @@
 <template>
   <v-container>
-    <h1 class="text-h4 font-weight-bold mb-4">Panier</h1>
+    <h1 class="text-h4 font-weight-bold mb-4">
+      Validation du panier
+    </h1>
 
     <v-card
       v-for="item in cart.items"
       :key="item.id + item.taille"
       class="mb-3 pa-4"
     >
-      <div class="d-flex justify-space-between align-center">
+      <div class="d-flex justify-space-between">
         <div>
           <strong>{{ item.nom }}</strong><br />
           Taille : {{ item.taille }}<br />
@@ -15,9 +17,7 @@
         </div>
 
         <div>
-          <v-btn icon @click="remove(item.id, item.taille)">
-            ✕
-          </v-btn>
+          {{ item.prix * item.quantity }} $
         </div>
       </div>
     </v-card>
@@ -26,14 +26,24 @@
       Total : {{ total }} $
     </h2>
 
-    <v-btn
-      color="black"
-      class="mt-4"
-      :disabled="cart.items.length === 0"
-      to="/checkout"
-    >
-      Passer à la caisse
-    </v-btn>
+    <div class="mt-6">
+      <v-btn
+        color="grey"
+        variant="outlined"
+        to="/cart"
+        class="mr-3"
+      >
+        Retour au panier
+      </v-btn>
+
+      <v-btn
+        color="black"
+        :disabled="cart.items.length === 0"
+        @click="confirmCheckout"
+      >
+        Confirmer et payer
+      </v-btn>
+    </div>
   </v-container>
 </template>
 
@@ -50,7 +60,8 @@ const total = computed(() =>
   )
 )
 
-function remove(id, taille) {
-  cart.removeItem(id, taille)
+function confirmCheckout() {
+  console.log('Panier validé :', cart.items)
+  // post to API endpoint to create order
 }
 </script>
