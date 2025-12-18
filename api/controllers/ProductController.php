@@ -12,12 +12,12 @@ class ProductController
 
     public function showAll()
     {
-        return $this->model->all();
+        return $this->model->allWithTailles();
     }
 
     public function show($id)
     {
-        $product = $this->model->find($id);
+        $product = $this->model->findWithTailles($id);
         if (!$product) {
             http_response_code(404);
             return ["error" => "Produit introuvable"];

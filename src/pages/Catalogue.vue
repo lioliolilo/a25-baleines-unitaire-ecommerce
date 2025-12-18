@@ -24,17 +24,15 @@ const produits = ref([])
 
 onMounted(async () => {
   try {
-    const res = await fetch('/api/product/afficherProduit.php', {
-      credentials: 'include'
-    })
+    const res = await fetch('/api/product/afficherProduit.php', { credentials: 'include' })
     const data = await res.json()
     if (data.success) {
       produits.value = data.produits
     } else {
-      console.error(data.error)
+      console.error('Erreur API:', data.error)
     }
   } catch (err) {
-    console.error(err)
+    console.error('Erreur fetch:', err)
   }
 })
 </script>

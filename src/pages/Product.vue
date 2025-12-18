@@ -12,7 +12,9 @@
         <v-select
           v-model="selectedTaille"
           label="Taille"
-          :items="produit.tailles"
+          :items="produit.tailles || ['Unique']"
+          item-title="label"
+          item-value="id"
           class="mb-4"
         />
 
@@ -44,30 +46,40 @@ const route = useRoute()
 
 const produit = ref(null)
 const selectedTaille = ref(null)
+const produits = ref([])
 
-const produits = [
-  {
-    id: 1,
-    nom: 'Cravate Unicorne',
-    prix: 129,
-    image: '/images/tieX.webp',
-    tailles: ['Unique'],
-  },
-  {
-    id: 2,
-    nom: 'Chemise Unicorne',
-    prix: 249,
-    image: '/images/shirt1.webp',
-    tailles: ['S', 'M', 'L'],
-  },
-]
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/product/afficherProduit.php', {
+      credentials: 'include'
+    })
+    const data = await res.json()
 
-onMounted(() => {
-  const id = Number(route.params.id)
-  produit.value = produits.find(p => p.id === id)
+    if (data.success) {
+      data.produits.forEach(p => {
+        p.image = p.image.replace(/^public\//, '/')
+        p.image2 = p.image2.replace(/^public\//, '/')
+      })
+
+      produits.value = data.produits
+
+      const id = Number(route.params.id)
+      produit.value = produits.value.find(p => p.id === id)
+
+      if (produit.value && !produit.value.tailles) {
+        produit.value.tailles = ['Unique']
+      }
+    } else {
+      console.error('Erreur API:', data.error)
+    }
+  } catch (err) {
+    console.error('Erreur fetch produit:', err)
+  }
 })
 
 function addToCart() {
+  if (!produit.value || !selectedTaille.value) return
+
   cart.addItem({
     id: produit.value.id,
     nom: produit.value.nom,
