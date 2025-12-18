@@ -45,12 +45,12 @@ const cart = useCartStore()
 
 const total = computed(() =>
   cart.items.reduce(
-    (sum, item) => sum + item.prix * item.quantity,
-    0
+    (sum, item) => sum + item.prix * item.quantity, 0
   )
 )
 
 function remove(id, taille) {
-  cart.removeItem(id, taille)
+  cart.removeItem({ id, taille })
 }
+
 </script>

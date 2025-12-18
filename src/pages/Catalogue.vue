@@ -17,20 +17,24 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import ProductCard from '@/components/ProductCard.vue'
 
-const produits = [
-  {
-    id: 1,
-    nom: 'Cravate Unicorne',
-    prix: 129,
-    image: '/images/tieX.webp',
-  },
-  {
-    id: 2,
-    nom: 'Chemise Unicorne',
-    prix: 249,
-    image: '/images/shirt1.webp',
-  },
-]
+const produits = ref([])
+
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/product/afficherProduit.php', {
+      credentials: 'include'
+    })
+    const data = await res.json()
+    if (data.success) {
+      produits.value = data.produits
+    } else {
+      console.error(data.error)
+    }
+  } catch (err) {
+    console.error(err)
+  }
+})
 </script>

@@ -1,5 +1,5 @@
 <?php
-require_once "models/Product.php";
+require_once __DIR__ . '/../models/Product.php';
 
 class ProductController
 {
@@ -10,9 +10,9 @@ class ProductController
         $this->model = new Product();
     }
 
-    public function index()
+    public function showAll()
     {
-        return json_encode($this->model->all());
+        return $this->model->all();
     }
 
     public function show($id)
@@ -20,8 +20,8 @@ class ProductController
         $product = $this->model->find($id);
         if (!$product) {
             http_response_code(404);
-            return json_encode(["error" => "Produit introuvable"]);
+            return ["error" => "Produit introuvable"];
         }
-        return json_encode($product);
+        return $product;
     }
 }

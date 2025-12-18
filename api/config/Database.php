@@ -8,13 +8,14 @@ class Database
     {
         if (self::$pdo === null) {
             $host = "localhost";
+            $port = 3306;
             $dbname = "rich_ricasso_shop";
             $user = "root";
             $pass = "";
 
             try {
                 self::$pdo = new PDO(
-                    "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+                    "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
                     $user,
                     $pass,
                     [
@@ -35,3 +36,4 @@ class Database
         return self::$pdo;
     }
 }
+

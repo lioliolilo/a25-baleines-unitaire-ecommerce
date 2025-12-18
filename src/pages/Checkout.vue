@@ -9,41 +9,23 @@
       :key="item.id + item.taille"
       class="mb-3 pa-4"
     >
-      <div class="d-flex justify-space-between">
-        <div>
-          <strong>{{ item.nom }}</strong><br />
-          Taille : {{ item.taille }}<br />
-          {{ item.prix }} $ × {{ item.quantity }}
-        </div>
-
-        <div>
-          {{ item.prix * item.quantity }} $
-        </div>
-      </div>
+      <strong>{{ item.nom }}</strong><br />
+      Taille : {{ item.taille }}<br />
+      {{ item.prix }} $ × {{ item.quantity }}
     </v-card>
 
     <h2 class="text-h5 mt-4">
       Total : {{ total }} $
     </h2>
 
-    <div class="mt-6">
-      <v-btn
-        color="grey"
-        variant="outlined"
-        to="/cart"
-        class="mr-3"
-      >
-        Retour au panier
-      </v-btn>
-
-      <v-btn
-        color="black"
-        :disabled="cart.items.length === 0"
-        @click="confirmCheckout"
-      >
-        Confirmer et payer
-      </v-btn>
-    </div>
+    <v-btn
+      color="black"
+      class="mt-4"
+      :disabled="cart.items.length === 0"
+      @click="confirm"
+    >
+      Confirmer
+    </v-btn>
   </v-container>
 </template>
 
@@ -60,8 +42,13 @@ const total = computed(() =>
   )
 )
 
-function confirmCheckout() {
-  console.log('Panier validé :', cart.items)
-  // post to API endpoint to create order
+async function confirm() {
+  try {
+    const data = await cart.checkout();
+    alert('Commande réussie, ID : ' + data.order_id);
+  } catch (error) {
+    alert('Erreur API : ' + (error.message || 'Erreur inconnue'));
+    console.error(error);
+  }
 }
 </script>

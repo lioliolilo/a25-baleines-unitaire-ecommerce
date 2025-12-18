@@ -1,7 +1,6 @@
 <?php
-session_start();
-require_once 'models/Order.php';
-require_once 'models/OrderItem.php';
+require_once __DIR__ . '/../models/Order.php';
+require_once __DIR__ . '/../models/OrderItem.php';
 
 class OrderController {
     private $db;
@@ -23,23 +22,38 @@ class OrderController {
 
         $totalAmount = 0;
         foreach ($cart as $item) {
-            $totalAmount += $item['price'] * $item['quantity'];
+            $totalAmount += $item['prix'] * $item['quantity'];
         }
 
         $orderId = $this->orderModel->create($userId, $totalAmount);
 
         foreach ($cart as $item) {
+            $produit_id = $item['id'] ?? null;
+            $price = $item['prix'] ?? null;
+            $quantity = $item['quantity'] ?? 1;
+
+            $taille_id = null;
+            if (!empty($item['taille'])) {
+                $stmt = $this->db->prepare("SELECT id FROM tailles WHERE code = ?");
+                $stmt->execute([$item['taille']]);
+                $taille_id = $stmt->fetchColumn();
+            }
+
+            if (!$produit_id || !$price) {
+                throw new Exception("Produit ou prix manquant");
+            }
+
             $this->orderItemModel->addItem(
                 $orderId,
-                $item['produit_id'],
-                $item['taille_id'],
-                $item['quantity'],
-                $item['price']
+                $produit_id,
+                $taille_id,
+                $quantity,
+                $price
             );
         }
 
         unset($_SESSION['cart']);
-        
+
         return $orderId;
     }
 }
