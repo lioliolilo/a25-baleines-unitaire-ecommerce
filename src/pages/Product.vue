@@ -14,7 +14,7 @@
           label="Taille"
           :items="produit.tailles || ['Unique']"
           item-title="label"
-          item-value="id"
+          item-value="label"
           class="mb-4"
         />
 
